@@ -1,0 +1,63 @@
+[gd_scene format=3 uid="uid://cwalbr5ama5n3"]
+
+[ext_resource type="Script" uid="uid://bry8mqthurd" path="res://player.gd" id="1_sweqy"]
+[ext_resource type="Texture2D" uid="uid://3xcy1xr57bfe" path="res://dodge_the_creeps_2d_assets/art/playerGrey_up1.png" id="2_2hs0m"]
+[ext_resource type="Texture2D" uid="uid://q8tbuksauamm" path="res://dodge_the_creeps_2d_assets/art/playerGrey_up2.png" id="3_1jxqw"]
+[ext_resource type="Texture2D" uid="uid://bnvqt7mopr6dc" path="res://dodge_the_creeps_2d_assets/art/playerGrey_walk1.png" id="4_dw050"]
+[ext_resource type="Texture2D" uid="uid://dl6nk74gcl3a6" path="res://dodge_the_creeps_2d_assets/art/playerGrey_walk2.png" id="5_b26j0"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_n7ghd"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_2hs0m")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_1jxqw")
+}],
+"loop": true,
+"name": &"up",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_dw050")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_b26j0")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 5.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_nvl01"]
+radius = 24.0
+height = 62.0
+
+[node name="player" type="Area2D" unique_id=1368259390]
+position = Vector2(-1, 0)
+gravity_point = true
+gravity_point_unit_distance = 1.216
+script = ExtResource("1_sweqy")
+metadata/_edit_group_ = true
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=289200070]
+scale = Vector2(0.5, 0.5)
+sprite_frames = SubResource("SpriteFrames_n7ghd")
+animation = &"up"
+frame_progress = 0.64333904
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1529838965]
+shape = SubResource("CapsuleShape2D_nvl01")
+
+[node name="ImmuneTimer" type="Timer" parent="." unique_id=1200648563]
+wait_time = 2.5
+one_shot = true
+
+[node name="BlinkTimer" type="Timer" parent="." unique_id=1680060384]
+wait_time = 0.153
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="timeout" from="ImmuneTimer" to="." method="_on_immune_timer_timeout"]
+[connection signal="timeout" from="BlinkTimer" to="." method="_on_blink_timer_timeout"]

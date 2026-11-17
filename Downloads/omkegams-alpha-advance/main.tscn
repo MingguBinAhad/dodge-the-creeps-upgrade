@@ -1,0 +1,70 @@
+[gd_scene format=3 uid="uid://0wt6icnhvxj4"]
+
+[ext_resource type="Script" uid="uid://ciwq7ernf5083" path="res://main.gd" id="1_h2yge"]
+[ext_resource type="PackedScene" uid="uid://bcx6i2r6cxipo" path="res://mob.tscn" id="2_1bvp3"]
+[ext_resource type="Texture2D" uid="uid://doft5urtouh77" path="res://logo-bgn.png" id="3_7mycd"]
+[ext_resource type="PackedScene" uid="uid://cwalbr5ama5n3" path="res://player.tscn" id="3_lquwl"]
+[ext_resource type="PackedScene" uid="uid://cvcqc8ksbucdp" path="res://hud.tscn" id="4_1bvp3"]
+[ext_resource type="AudioStream" uid="uid://cesfnqrwo6qfb" path="res://dodge_the_creeps_2d_assets/art/House In a Forest Loop.ogg" id="6_272bh"]
+[ext_resource type="AudioStream" uid="uid://ddcpilaninvm0" path="res://dodge_the_creeps_2d_assets/art/gameover.wav" id="7_5vw27"]
+
+[sub_resource type="Curve2D" id="Curve2D_7mycd"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 480, 0, 0, 0, 0, 0, 480, 720, 0, 0, 0, 0, 0, 720, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+}
+point_count = 6
+
+[node name="Main" type="Node" unique_id=1002570663]
+script = ExtResource("1_h2yge")
+mob_scene = ExtResource("2_1bvp3")
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=1633314200]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_7mycd")
+expand_mode = 1
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=847671341]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.35162923, 0.5980859, 0.96787554, 1)
+
+[node name="player" parent="." unique_id=1023764377 instance=ExtResource("3_lquwl")]
+
+[node name="MobTimer" type="Timer" parent="." unique_id=974649796]
+wait_time = 0.5
+
+[node name="ScoreTimer" type="Timer" parent="." unique_id=1241688892]
+
+[node name="StartTimer" type="Timer" parent="." unique_id=2090054812]
+wait_time = 2.0
+one_shot = true
+
+[node name="StartPosition" type="Marker2D" parent="." unique_id=1422110384]
+position = Vector2(240, 450)
+
+[node name="Path2D" type="Path2D" parent="." unique_id=194473932]
+curve = SubResource("Curve2D_7mycd")
+
+[node name="MobSpawnLocation" type="PathFollow2D" parent="Path2D" unique_id=23372687]
+
+[node name="HUD" parent="." unique_id=787254927 instance=ExtResource("4_1bvp3")]
+
+[node name="Music" type="AudioStreamPlayer2D" parent="." unique_id=33008216]
+stream = ExtResource("6_272bh")
+parameters/looping = true
+
+[node name="DeathSound" type="AudioStreamPlayer2D" parent="." unique_id=1905721833]
+stream = ExtResource("7_5vw27")
+
+[connection signal="hit" from="player" to="." method="game_over"]
+[connection signal="timeout" from="MobTimer" to="." method="_on_mob_timer_timeout"]
+[connection signal="timeout" from="ScoreTimer" to="." method="_on_score_timer_timeout"]
+[connection signal="timeout" from="StartTimer" to="." method="_on_start_timer_timeout"]
+[connection signal="start_game" from="HUD" to="." method="new_game"]

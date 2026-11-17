@@ -1,0 +1,138 @@
+[gd_scene format=3 uid="uid://cvcqc8ksbucdp"]
+
+[ext_resource type="Script" uid="uid://csjv6jtl2jhy0" path="res://hud.gd" id="1_64ctp"]
+[ext_resource type="FontFile" uid="uid://bnnpouk8nn6y1" path="res://dodge_the_creeps_2d_assets/fonts/Xolonium-Regular.ttf" id="2_8sq4i"]
+[ext_resource type="Texture2D" uid="uid://7ydc2b468av5" path="res://Minecraft-Heart-PNG-Clipart.png" id="3_8sq4i"]
+[ext_resource type="Shader" uid="uid://d2cqbjwfyx7vw" path="res://hud.gdshader" id="4_640wx"]
+
+[sub_resource type="InputEventAction" id="InputEventAction_64ctp"]
+action = &"start_game"
+
+[sub_resource type="Shortcut" id="Shortcut_8sq4i"]
+events = [SubResource("InputEventAction_64ctp")]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_a2258"]
+shader = ExtResource("4_640wx")
+shader_parameter/lod = 0.5
+
+[sub_resource type="InputEventKey" id="InputEventKey_640wx"]
+device = -1
+keycode = 4194305
+
+[sub_resource type="Shortcut" id="Shortcut_a2258"]
+events = [SubResource("InputEventKey_640wx")]
+
+[node name="HUD" type="CanvasLayer" unique_id=787254927]
+script = ExtResource("1_64ctp")
+metadata/_edit_vertical_guides_ = [-15.0, -15.0]
+metadata/_edit_horizontal_guides_ = [60.0, 17.0]
+
+[node name="ScoreLabel" type="Label" parent="." unique_id=187804666]
+offset_right = 45.0
+offset_bottom = 78.0
+size_flags_horizontal = 4
+theme_override_fonts/font = ExtResource("2_8sq4i")
+theme_override_font_sizes/font_size = 64
+text = "0"
+
+[node name="Message" type="Label" parent="." unique_id=420955066]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -240.0
+offset_top = -120.0
+offset_right = 240.0
+offset_bottom = 120.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("2_8sq4i")
+theme_override_font_sizes/font_size = 64
+text = "Dodge the Creeps!"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="StartButton" type="Button" parent="." unique_id=1232895734]
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -100.0
+offset_top = -140.0
+offset_right = 100.0
+offset_bottom = -40.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_fonts/font = ExtResource("2_8sq4i")
+theme_override_font_sizes/font_size = 64
+shortcut = SubResource("Shortcut_8sq4i")
+text = "Start"
+
+[node name="MessageTimer" type="Timer" parent="." unique_id=1630541651]
+wait_time = 2.0
+one_shot = true
+
+[node name="Lives" type="HBoxContainer" parent="." unique_id=5512358]
+layout_direction = 2
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 9.0
+offset_top = -63.0
+offset_right = 169.0
+offset_bottom = -16.0
+grow_vertical = 0
+size_flags_horizontal = 0
+size_flags_vertical = 4
+
+[node name="heart" type="TextureRect" parent="Lives" unique_id=941372723]
+layout_mode = 2
+size_flags_horizontal = 0
+texture = ExtResource("3_8sq4i")
+expand_mode = 3
+
+[node name="heart2" type="TextureRect" parent="Lives" unique_id=961233463]
+layout_mode = 2
+size_flags_horizontal = 0
+texture = ExtResource("3_8sq4i")
+expand_mode = 3
+
+[node name="heart3" type="TextureRect" parent="Lives" unique_id=547079180]
+layout_mode = 2
+size_flags_horizontal = 0
+texture = ExtResource("3_8sq4i")
+expand_mode = 3
+
+[node name="BlurOverlay" type="ColorRect" parent="." unique_id=115434429]
+process_mode = 3
+visible = false
+material = SubResource("ShaderMaterial_a2258")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="PauseButton" type="Button" parent="." unique_id=533149083]
+process_mode = 3
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -60.0
+offset_top = 18.0
+offset_right = -17.0
+offset_bottom = 59.0
+grow_horizontal = 0
+shortcut = SubResource("Shortcut_a2258")
+icon_alignment = 1
+expand_icon = true
+
+[connection signal="pressed" from="StartButton" to="." method="_on_start_button_pressed"]
+[connection signal="timeout" from="MessageTimer" to="." method="_on_message_timer_timeout"]
+[connection signal="pressed" from="PauseButton" to="." method="_on_pause_button_pressed"]
